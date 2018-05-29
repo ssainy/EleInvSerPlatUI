@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="Suite" parallel="false">
+   <!-- <test name="Test_ProviderPro" >
+        <classes>
+            <class name="TestProcedure.Test_ProviderPro">
+                <methods preserve-order="true">
+                    <include name="服务商注册" />
+                    <include name="服务商三证不合一认证" />
+                    <include name="后台审核服务商_同意" />
+                    <include name="服务商申请报销资质" />
+                    <include name="后台审核服务商报销资质_同意" />
+                    <include name="服务商查看审核报销资质状态_成功" />
+                    <include name="服务商申请开票资质" />
+                    <include name="后台审核服务商开票资质_同意" />
+                    <include name="服务商查看审核开票资质状态_成功" />
+                </methods>
+            </class>
+        </classes>
+    </test>-->
+    <test name="Test_EnterprisePro" >
+        <classes>
+            <class name="TestProcedure.Test_EnterprisePro">
+                <methods preserve-order="true">
+                    <include name="企业注册" />
+                    <include name="企业三证合一认证" />
+                    <include name="企业申请开通开票服务_服务器版" />
+                    <include name="服务商审核企业的开票服务_通过" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
+
+

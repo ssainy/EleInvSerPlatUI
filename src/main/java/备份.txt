@@ -1,0 +1,204 @@
+ @Test
+    public void 服务商总体流程() throws InterruptedException {
+        String url="http://10.1.20.8/provider/index.html";
+        chromeDriver.get(url);//打开网页
+        chromeDriver.findElement(By.id("username")).sendKeys(properties.getProperty("ProUser"));
+        chromeDriver.findElement(By.id("password")).sendKeys("LLXY0828cch");
+        JOptionPane.showMessageDialog(null, "请输入图片验证码", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.id("loginButton")).click();
+        //申请服务商认证
+        chromeDriver.findElement(By.id("leftnav1")).click();
+        chromeDriver.findElement(By.id("corpName")).sendKeys("测试信息有限公司");
+        chromeDriver.findElement(By.id("ratepayersCode")).sendKeys("150010201609011122");
+        chromeDriver.findElement(By.id("taxRegisterCode")).sendKeys("4545123654789654123");
+        chromeDriver.findElement(By.id("taxRegisterPath")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\1.jpg");
+        chromeDriver.findElement(By.xpath("//*[@id=\"wszhyBox\"]/ul/li[5]/p/b")).click();//点击上传图片按钮
+        chromeDriver.findElement(By.id("orgCode")).sendKeys("123321365");
+        JOptionPane.showMessageDialog(null, "请点击确定", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.id("orgPath")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\2.jpg");
+        chromeDriver.findElement(By.xpath("//*[@id=\"wszhyBox\"]/ul/li[7]/p/b")).click();//点击上传图片按钮
+        chromeDriver.findElement(By.id("businessLicence")).sendKeys("1234567891234");
+        JOptionPane.showMessageDialog(null, "请点击确定", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.id("businessLicencePath")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\2.jpg");
+        chromeDriver.findElement(By.xpath("//*[@id=\"wszhyBox\"]/ul/li[9]/p/b")).click();
+        chromeDriver.findElement(By.id("areaId")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='山西省']")).click();
+        chromeDriver.findElement(By.id("registerAdd")).sendKeys("山西省晋中市");
+        chromeDriver.findElement(By.id("operationsAdd")).sendKeys("山西省晋中市");
+        chromeDriver.findElement(By.id("contracts")).sendKeys("崔彩虹");
+        chromeDriver.findElement(By.id("contractsEmail")).sendKeys("507939109@qq.com");
+        chromeDriver.findElement(By.id("contractsCard")).sendKeys("140729199408280046");
+        chromeDriver.findElement(By.id("contractsCardPath1")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\1.jpg");
+        chromeDriver.findElement(By.xpath("//*[@id=\"wszhyBox\"]/ul/li[20]/p/b")).click();
+        chromeDriver.findElement(By.id("contractsCardPath2")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\1.jpg");
+        chromeDriver.findElement(By.xpath("//*[@id=\"wszhyBox\"]/ul/li[21]/p/b")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='提交']")).click();
+        Thread.sleep(5000);
+        chromeDriver.findElement(By.xpath("//*[text()='确定']")).click();
+        Thread.sleep(1000);
+        String result=chromeDriver.findElement(By.xpath("/html/body/div[2]/div/div[3]/span/font")).getText();
+        Assert.assertEquals("认证状态：待审核!",result);
+        //后台审核服务商
+        WebElement webElement = chromeDriver.findElement(By.tagName("body"));
+        webElement.sendKeys(Keys.CONTROL + "t");
+        UtilForWeb.switchToCurrentWindow(chromeDriver);
+        chromeDriver.get("http://192.168.96.8/management/index.html");
+        chromeDriver.findElement(By.id("username")).sendKeys("admin");
+        chromeDriver.findElement(By.id("password")).sendKeys("admin");
+        JOptionPane.showMessageDialog(null, "请输入图片验证码", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.id("loginButton")).click();
+        Thread.sleep(1000);
+        chromeDriver.findElement(By.xpath("//*[@id=\"leftnav2\"]")).click();//点击服务商认证审核
+        Thread.sleep(1000);
+        chromeDriver.findElement(By.xpath("//*[text()='审核']")).click();
+        chromeDriver.findElement(By.id("plantform")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='京东测试']")).click();
+        chromeDriver.findElement(By.id("auditOpinion")).sendKeys("同意");
+        chromeDriver.findElement(By.xpath("//*[text()='审核通过']")).click();
+        //服务商查看审核状态
+        UtilForWeb.switchToOneWindow(chromeDriver);
+        chromeDriver.navigate().refresh();
+        result=chromeDriver.findElement(By.xpath("/html/body/div[2]/div/div[3]/ul/li[1]/div[2]/span/font")).getText();
+        Assert.assertEquals("审核通过!",result);
+        //服务商申请开通报销服务资质
+        chromeDriver.findElement(By.id("leftnav2")).click();//点击我的资质
+        JOptionPane.showMessageDialog(null, "请点击确定", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.xpath("//*[@id=\"customers\"]/tbody/tr[1]/td[6]/a")).click();//点击开通报销服务资质
+        chromeDriver.findElement(By.xpath("//*[text()='确定']")).click();
+       /* result=chromeDriver.findElement(By.xpath("/*//*[@id=\"layui-layer3\"]/div")).getText();
+        Assert.assertEquals("操作处理成功!",result);*/
+        //后台审核报销服务资质
+        UtilForWeb.switchToCurrentWindow(chromeDriver);
+        chromeDriver.findElement(By.id("leftnav3")).click();
+        Thread.sleep(1000);
+        chromeDriver.findElement(By.xpath("//*[text()='审核']")).click();
+        chromeDriver.findElement(By.id("auditOpinion")).sendKeys("同意");
+        chromeDriver.findElement(By.xpath("//*[text()='审核通过']")).click();
+        Thread.sleep(1000);
+        //服务商查看报销资质审核状态
+        UtilForWeb.switchToOneWindow(chromeDriver);
+        chromeDriver.findElement(By.id("leftnav2")).click();//点击我的资质
+        Thread.sleep(1000);
+        result=chromeDriver.findElement(By.xpath("//*[@id=\"customers\"]/tbody/tr[1]/td[4]")).getText();
+        Assert.assertEquals("已开通",result);
+        //服务商申请开通开票服务资质
+        chromeDriver.findElement(By.id("leftnav2")).click();//点击我的资质
+        JOptionPane.showMessageDialog(null, "请点击确定", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.xpath("//*[@id=\"customers\"]/tbody/tr[2]/td[6]/a")).click();//点击开通开票服务资质
+        chromeDriver.findElement(By.xpath("//*[text()='确定']")).click();
+        /*result=chromeDriver.findElement(By.xpath("/*//*[@id=\"layui-layer3\"]/div")).getText();
+        Assert.assertEquals("操作处理成功!",result);*/
+        //后台审核开票服务资质
+        UtilForWeb.switchToCurrentWindow(chromeDriver);
+        chromeDriver.findElement(By.id("leftnav3")).click();
+        Thread.sleep(1000);
+        chromeDriver.findElement(By.xpath("//*[text()='审核']")).click();
+        chromeDriver.findElement(By.id("auditOpinion")).sendKeys("同意");
+        chromeDriver.findElement(By.xpath("//*[text()='审核通过']")).click();
+        Thread.sleep(1000);
+        //服务商查看开票资质审核状态
+        UtilForWeb.switchToOneWindow(chromeDriver);
+        chromeDriver.findElement(By.id("leftnav2")).click();//点击我的资质
+        Thread.sleep(1000);
+        result=chromeDriver.findElement(By.xpath("//*[@id=\"customers\"]/tbody/tr[2]/td[4]")).getText();
+        Assert.assertEquals("已开通",result);
+    }
+
+
+ @Test
+    public void 企业整体流程() throws InterruptedException {
+        //企业登录
+        String url="http://10.1.20.8/enterprise/index.html";
+        chromeDriver.get(url);//打开网页
+        chromeDriver.findElement(By.id("username")).sendKeys(properties.getProperty("EntUser"));
+        chromeDriver.findElement(By.id("password")).sendKeys("LLXY888a");
+        JOptionPane.showMessageDialog(null, "请输入图片验证码", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.id("loginButton")).click();
+        //申请企业认证
+        chromeDriver.findElement(By.xpath("//*[text()='立即去认证']")).click();
+        chromeDriver.findElement(By.id("corpName")).sendKeys("测试公司");
+        chromeDriver.findElement(By.id("ratepayersCode")).sendKeys("123658965478965");
+        chromeDriver.findElement(By.id("taxRegisterCode")).sendKeys("4545123654789654123");
+        chromeDriver.findElement(By.id("taxRegisterPath")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\1.jpg");
+        chromeDriver.findElement(By.xpath("//*[@id=\"wszhyBox\"]/ul/li[5]/b")).click();//点击上传图片按钮
+        chromeDriver.findElement(By.id("orgCode")).sendKeys("123321365");
+        JOptionPane.showMessageDialog(null, "请点击确定", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.id("orgPath")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\2.jpg");
+        chromeDriver.findElement(By.xpath("//*[@id=\"wszhyBox\"]/ul/li[7]/b")).click();//点击上传图片按钮
+        chromeDriver.findElement(By.id("businessLicence")).sendKeys("1234567891234");
+        JOptionPane.showMessageDialog(null, "请点击确定", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.id("businessLicencePath")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\2.jpg");
+        chromeDriver.findElement(By.xpath("//*[@id=\"wszhyBox\"]/ul/li[9]/b")).click();
+        chromeDriver.findElement(By.id("areaId")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='山西省']")).click();
+        chromeDriver.findElement(By.id("registerAdd")).sendKeys("山西省晋中市");
+        chromeDriver.findElement(By.id("operationsAdd")).sendKeys("山西省晋中市");
+        chromeDriver.findElement(By.id("contracts")).sendKeys("崔彩虹");
+        chromeDriver.findElement(By.id("contractsEmail")).sendKeys("507939109@qq.com");
+        chromeDriver.findElement(By.id("contractsCard")).sendKeys("140729199408280046");
+        chromeDriver.findElement(By.id("contractsCardPath1")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\1.jpg");
+        chromeDriver.findElement(By.xpath("//*[@id=\"wszhyBox\"]/ul/li[19]/b")).click();
+        chromeDriver.findElement(By.id("contractsCardPath2")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\1.jpg");
+        chromeDriver.findElement(By.xpath("//*[@id=\"wszhyBox\"]/ul/li[20]/b")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='提交']")).click();
+        Thread.sleep(5000);
+        chromeDriver.findElement(By.xpath("//*[text()='确定']")).click();
+        Thread.sleep(1000);
+        String result=chromeDriver.findElement(By.xpath("/html/body/div[8]/div/div[2]/div[1]/ul/li[1]/p")).getText();
+        Assert.assertEquals("审核通过!",result);
+       //开票服务申请
+        chromeDriver.findElement(By.xpath("/html/body/div[1]/div[2]/div[2]")).click();
+        chromeDriver.findElement(By.xpath("//*[@id=\"leftnav5\"]")).click();
+        chromeDriver.findElement(By.id("tax_org_code")).click();//选择省级税务机关
+        chromeDriver.findElement(By.xpath("//*[text()='山西省国家税务局']")).click();
+        chromeDriver.findElement(By.id("city_org_code")).click();//选择市级税务机关
+        chromeDriver.findElement(By.xpath("//*[text()='晋中市国家税务局']")).click();
+        chromeDriver.findElement(By.id("provider")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='测试信息有限公司']")).click();
+        chromeDriver.findElement(By.id("cert_email")).sendKeys("507939109@qq.com");
+        chromeDriver.findElement(By.id("getemailcode")).click();
+        JOptionPane.showMessageDialog(null, "请输入邮箱验证码", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.xpath("//*[text()='提交']")).click();
+        Thread.sleep(1000);
+        chromeDriver.findElement(By.xpath("//*[text()='确认提交']")).click();
+        Thread.sleep(1000);
+        result=chromeDriver.findElement(By.xpath("//*[text()='/html/body/div[3]/div/div[2]/div/span/font[2]']")).getText();
+        Assert.assertEquals("申请审核中，请耐心等待！",result);
+        //服务商审核企业的开票服务
+        WebElement webElement = chromeDriver.findElement(By.tagName("body"));
+        webElement.sendKeys(Keys.CONTROL + "t");
+        UtilForWeb.switchToCurrentWindow(chromeDriver);
+        chromeDriver.get("http://10.1.20.8/provider/index.html");
+        chromeDriver.findElement(By.id("username")).sendKeys("cch123");
+        chromeDriver.findElement(By.id("password")).sendKeys("LLXY0828cch");
+        JOptionPane.showMessageDialog(null, "请输入图片验证码", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.id("loginButton")).click();
+        chromeDriver.findElement(By.xpath("/html/body/div[1]/div[2]/div[4]/span")).click();
+        chromeDriver.findElement(By.id("leftnav6")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='审批']")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='下一步']")).click();
+        chromeDriver.findElement(By.id("uploaders")).sendKeys("D:\\workspaces\\EleInvSerPlat\\img\\2.jpg");
+        chromeDriver.findElement(By.xpath("//*[text()='上传']")).click();
+        Thread.sleep(3000);
+        chromeDriver.findElement(By.xpath("//*[text()='获取制章制证信息']")).click();
+        //报销服务申请
+        UtilForWeb.switchToOneWindow(chromeDriver);
+        chromeDriver.findElement(By.id("leftnav7")).click();//点击报销服务申请
+        chromeDriver.findElement(By.id("provider")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='测试信息有限公司']")).click();
+        chromeDriver.findElement(By.xpath("//*[@id=\"providerform\"]/ul/li[6]/div/a")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='确认提交']")).click();
+        result=chromeDriver.findElement(By.xpath("//*[text()='/html/body/div[3]/div/div[2]/div/span/font[2]']")).getText();
+        Assert.assertEquals("申请审核中，请耐心等待！",result);
+        //服务商审核企业的报销服务
+        UtilForWeb.switchToCurrentWindow(chromeDriver);
+        chromeDriver.findElement(By.id("username")).sendKeys("cch123");
+        chromeDriver.findElement(By.id("password")).sendKeys("LLXY0828cch");
+        JOptionPane.showMessageDialog(null, "请输入图片验证码", "提示信息", JOptionPane.ERROR_MESSAGE);
+        chromeDriver.findElement(By.id("loginButton")).click();
+        chromeDriver.findElement(By.xpath("/html/body/div[1]/div[2]/div[4]/span")).click();
+        chromeDriver.findElement(By.id("leftnav6")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='审批']")).click();
+        chromeDriver.findElement(By.xpath("//*[text()='审批通过']")).click();
+        //企业查看报销服务审批状态
+    }
